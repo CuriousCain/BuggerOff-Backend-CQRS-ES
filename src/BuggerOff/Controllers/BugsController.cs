@@ -23,7 +23,7 @@ namespace BuggerOff.Controllers
 		{
 			bugRepository = repository;
 			db = bugContext;
-			commandHandler = new BugCommandHandler(bugRepository, db);
+			commandHandler = new BugCommandHandler(db);
 		}
 
 		[HttpGet]

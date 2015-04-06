@@ -6,12 +6,10 @@ namespace Data_Layer.Commands.Bug
 {
     public class BugCommandHandler
     {
-		private IBugRepository bugRepo;
 		private BugContext db;
 
-		public BugCommandHandler(IBugRepository repo, BugContext bugContext)
+		public BugCommandHandler(BugContext bugContext)
 		{
-			bugRepo = repo;
 			db = bugContext;
 		}
 
