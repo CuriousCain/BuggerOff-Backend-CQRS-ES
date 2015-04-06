@@ -1,0 +1,16 @@
+{
+    "version": "1.0.0-*",
+    "dependencies": {
+        "EntityFramework.SqlServer": "7.0.0-beta3"
+    },
+
+    "frameworks": {
+        "aspnet50": {
+            "dependencies": {
+            },
+            "frameworkAssemblies": {
+                "System.ComponentModel.DataAnnotations": "4.0.0.0"
+            }
+        }
+    }
+}

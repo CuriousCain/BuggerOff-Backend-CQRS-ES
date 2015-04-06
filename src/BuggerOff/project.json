@@ -1,0 +1,34 @@
+{
+    "webroot": "wwwroot",
+    "version": "1.0.0-*",
+    "dependencies": {
+        "Microsoft.AspNet.Server.IIS": "1.0.0-beta3",
+        "Microsoft.AspNet.Mvc": "6.0.0-beta3",
+        "Microsoft.AspNet.StaticFiles": "1.0.0-beta3",
+        "Microsoft.AspNet.Server.WebListener": "1.0.0-beta3",
+        "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-beta3",
+        "EntityFramework.SqlServer": "7.0.0-beta3",
+        "EntityFramework.Commands": "7.0.0-beta3",
+        "BuggerOff.Data_Layer": "1.0.0-*"
+    },
+    "frameworks": {
+        "aspnet50": {
+            "frameworkAssemblies": { }
+        }
+    },
+    "commands": {
+        "ef": "EntityFramework.Commands"
+    },
+    "exclude": [
+        "wwwroot",
+        "node_modules",
+        "bower_components"
+    ],
+    "bundleExclude": [
+        "node_modules",
+        "bower_components",
+        "**.kproj",
+        "**.user",
+        "**.vspscc"
+    ]
+}

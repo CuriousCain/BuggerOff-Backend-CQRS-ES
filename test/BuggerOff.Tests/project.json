@@ -1,0 +1,17 @@
+{
+	"dependencies": {
+		"BuggerOff": "1.0.0-*",
+		"BuggerOff.Data_Layer": "1.0.0-*",
+		"Moq": "4.2.1409.1722",
+		"xunit": "2.1.0-beta1-build2945",
+		"xunit.runner.visualstudio": "2.1.0-beta1-build1051",
+		"xunit.runner.aspnet": "2.1.0-beta1-build60"
+	},
+	"frameworks": {
+		"aspnet50": { }
+	},
+	"commands": {
+		"test-vs": "xunit.runner.visualstudio",
+		"test-asp": "xunit.runner.aspnet"
+	}
+}
