@@ -29,22 +29,22 @@ namespace BuggerOff.Controllers
 		[HttpGet]
 		public IEnumerable<Bug> GetAll()
 		{
-			return bugRepository.AllBugs;
+            return db.Bugs; //TODO: Use database cache (query database)
 		}
 
-		[HttpGet("{id:int}", Name = "GetByIdRoute")]
+		[HttpGet]
 		public IActionResult GetByID(int id)
 		{
-			var bug = bugRepository.GetByID(id);
+            var bug = db.Bugs.SingleOrDefault(x => x.ID == id);
 
-			if (bug == null)
-				return HttpNotFound();
+            if (bug == null)
+                return new HttpNotFoundResult();
 
 			return new ObjectResult(bug);
 		}
 
 		[HttpPost]
-		public IActionResult CreateBug([FromBody] Bug bug)
+		public IActionResult CreateBug([FromBody] Bug bug) //TODO: Don't use full object as parameter
 		{
 			if (!ModelState.IsValid)
 			{
