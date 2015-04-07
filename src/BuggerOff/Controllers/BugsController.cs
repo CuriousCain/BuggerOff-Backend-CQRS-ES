@@ -27,7 +27,7 @@ namespace BuggerOff.Controllers
 		}
 
 		[HttpGet]
-		public IEnumerable<Bug> GetAll()
+		public IEnumerable<Bug> All()
 		{
             return db.Bugs; //TODO: Use database cache (query database)
 		}
@@ -44,7 +44,7 @@ namespace BuggerOff.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult CreateBug([FromBody] Bug bug) //TODO: Don't use full object as parameter
+		public IActionResult OpenBug([FromBody] Bug bug)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -52,23 +52,26 @@ namespace BuggerOff.Controllers
 			}
 			else
 			{
-				commandHandler.Handle(new OpenBug(bug));
+				commandHandler.Handle(new OpenBug(bug.Description));
 
 				return new HttpStatusCodeResult(201);
 			}
 		}
 
-		[HttpDelete("{id}")]
-		public IActionResult DeleteBug(int id)
+		[HttpPost]
+		public IActionResult CloseBug(int id)
 		{
-			if (bugRepository.TryDelete(id))
-			{
-				return new HttpStatusCodeResult(204);
-			}
-			else
-			{
-				return HttpNotFound();
-			}
+			commandHandler.Handle(new CloseBug(id));
+
+			return new HttpStatusCodeResult(202);
+		}
+
+		[HttpPost]
+		public IActionResult CloseMultipleBugs([FromBody] int[] bugIds)
+		{
+			commandHandler.Handle(new CloseMultipleBugs(bugIds));
+
+			return new HttpStatusCodeResult(202);
 		}
 	}
 }
