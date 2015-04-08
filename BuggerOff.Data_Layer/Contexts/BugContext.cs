@@ -12,7 +12,7 @@ namespace Data_Layer.Contexts
 
 		protected override void OnConfiguring(DbContextOptions builder)
 		{
-			builder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=BugTracker;Trusted_Connection=True;");
+			builder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=BugTracker;Trusted_Connection=True;MultipleActiveResultSets=True");
 		}
 	}
 }

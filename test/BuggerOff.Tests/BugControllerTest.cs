@@ -7,6 +7,7 @@ using Data_Layer.Models;
 using Data_Layer.Interfaces;
 using System.Linq;
 using System.Web;
+using Data_Layer.Contexts;
 
 namespace BuggerOff.Tests
 {
@@ -14,47 +15,23 @@ namespace BuggerOff.Tests
     {
 		private List<Bug> bugList = new List<Bug>();
 		private Bug testBug = new Bug { Description = "Test Bug", Fixed = false };
-		private Mock<IBugRepository> repo;
 		private BugsController bugController;
-		private Mock<HttpRequestBase> mockRequest;
+        private Mock<BugContext> bugDb;
 
 		public BugControllerTest()
 		{
 			bugList.Add(testBug);
 
-			repo = new Mock<IBugRepository>();
-			//bugController = new BugsController(repo.Object);
+            bugDb = new Mock<BugContext>();
+			bugController = new BugsController(bugDb.Object);
 		}
 
-		[Fact]
-		public void AllBugs_returns_bug_list()
-		{
-			repo.Setup(x => x.AllBugs).Returns(bugList);
+        [Fact]
+        public void TestAll()
+        {
+            var allBugs = bugController.All();
 
-			var testBugList = bugController.GetAll();
-
-			repo.Verify(x => x.AllBugs, Times.Once());
-			Assert.True(testBugList == bugList);
-		}
-
-		[Fact]
-		public void CreateBug_creates_bug()
-		{
-			repo.Setup(x => x.Add(It.IsAny<Bug>()));
-			
-			bugController.CreateBug(testBug);
-
-			repo.Verify(x => x.Add(It.Is<Bug>(b => b == testBug)), Times.Once());
-		}
-
-		[Fact]
-		public void GetByID_returns_correct_bug()
-		{
-			repo.Setup(x => x.AllBugs).Returns(bugList);
-
-			bugController.GetByID(0);
-
-			repo.Verify(x => x.GetByID(0), Times.Once());
-		}
+            bugDb.VerifyGet(x => x.Bugs, Times.Once());
+        }
     }
 }

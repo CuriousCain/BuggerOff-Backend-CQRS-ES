@@ -1,6 +1,6 @@
 {
 	"sources": [ "src", "." ],
-	"sdk": {
-		"version": "1.0.0-beta3"
-	}
+    "sdk": {
+        "version": "1.0.0-beta3"
+    }
 }

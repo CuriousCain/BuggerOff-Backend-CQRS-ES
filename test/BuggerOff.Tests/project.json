@@ -10,8 +10,8 @@
 	"frameworks": {
 		"aspnet50": { }
 	},
-	"commands": {
-		"test-vs": "xunit.runner.visualstudio",
-		"test-asp": "xunit.runner.aspnet"
-	}
+    "commands": {
+        "test-vs": "xunit.runner.visualstudio",
+        "test-asp": "xunit.runner.aspnet"
+    }
 }

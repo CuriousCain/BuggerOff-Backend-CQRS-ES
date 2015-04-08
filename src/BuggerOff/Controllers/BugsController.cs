@@ -15,13 +15,11 @@ namespace BuggerOff.Controllers
 	//Route is set in Startup: /bugs/[action]
 	public class BugsController : Controller
 	{
-		private readonly IBugRepository bugRepository;
 		private BugCommandHandler commandHandler;
 		private BugContext db;
 
-		public BugsController(IBugRepository repository, BugContext bugContext)
+		public BugsController(BugContext bugContext)
 		{
-			bugRepository = repository;
 			db = bugContext;
 			commandHandler = new BugCommandHandler(db);
 		}
