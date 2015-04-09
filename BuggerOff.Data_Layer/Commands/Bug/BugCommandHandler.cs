@@ -1,4 +1,5 @@
 ﻿using Data_Layer.Contexts;
+using Data_Layer.Events;
 using Data_Layer.Interfaces;
 using System;
 using System.Linq;
@@ -8,10 +9,12 @@ namespace Data_Layer.Commands.Bug
     public class BugCommandHandler //TODO: Use async functions
     {
         private BugContext db;
+        private BugEventHandler eventHandler;
 
         public BugCommandHandler(BugContext bugContext)
         {
             db = bugContext;
+            eventHandler = new BugEventHandler();
         }
 
         public void Handle(OpenBug command)
@@ -20,6 +23,8 @@ namespace Data_Layer.Commands.Bug
 
             db.Add(bug);
             db.SaveChanges();
+
+            eventHandler.Handle(new BugOpened(bug));
         }  
 
         public void Handle(CloseBug command)
