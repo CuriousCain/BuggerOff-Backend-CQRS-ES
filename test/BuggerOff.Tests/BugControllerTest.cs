@@ -17,14 +17,14 @@ namespace BuggerOff.Tests
 		private Bug testBug = new Bug { Description = "Test Bug", Fixed = false };
 		private BugsController bugController;
         private Mock<BugContext> bugDb;
-		private Mock<IBugCommandHandler> commandHandler;
+		private Mock<ICommandHandler> commandHandler;
 
 		public BugControllerTest()
 		{
 			bugList.Add(testBug);
 
             bugDb = new Mock<BugContext>();
-			commandHandler = new Mock<IBugCommandHandler>();
+			commandHandler = new Mock<ICommandHandler>();
 			bugController = new BugsController(bugDb.Object, commandHandler.Object);
 		}
 

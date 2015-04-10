@@ -1,19 +1,21 @@
-﻿using Data_Layer.Contexts;
+﻿using Data_Layer.Commands.Bug;
+using Data_Layer.Contexts;
 using Data_Layer.Events;
 using System;
 using System.Linq;
 
 namespace Data_Layer.Commands.Bug
 {
-    public class BugCommandHandler : IBugCommandHandler
+    public class BugCommandHandler : ICommandHandler<OpenBug>, ICommandHandler<CloseBug>,
+        ICommandHandler<CloseMultipleBugs>
     {
-        private BugContext db;
-        //private BugEventHandler eventHandler;
+        private readonly BugContext db;
+        private readonly BugEventHandler eventHandler;
 
         public BugCommandHandler(BugContext bugContext)
         {
             db = bugContext;
-            //eventHandler = new BugEventHandler();
+            eventHandler = new BugEventHandler();
         }
 
         public void Handle(OpenBug command)
@@ -23,7 +25,7 @@ namespace Data_Layer.Commands.Bug
             db.Add(bug);
             db.SaveChanges();
 
-            //eventHandler.Handle(new BugOpened(bug));
+            eventHandler.Handle(new BugOpened(bug));
         }  
 
         public void Handle(CloseBug command)

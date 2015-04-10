@@ -5,9 +5,11 @@ namespace Data_Layer.Events
 {
     [Serializable()]
     public class BugOpened {
+        
         public readonly Guid Id;
         public readonly int BugId;
         public readonly string BugDetails;
+        public readonly bool BugFixed;
 
         public BugOpened(Bug bug)
         {
@@ -15,6 +17,7 @@ namespace Data_Layer.Events
 
             BugId = bug.ID;
             BugDetails = bug.Description;
+            BugFixed = bug.Fixed;
         }
     }
 

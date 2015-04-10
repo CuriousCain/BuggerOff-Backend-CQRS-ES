@@ -7,6 +7,8 @@ using Microsoft.Framework.DependencyInjection;
 using Microsoft.Data.Entity;
 using Data_Layer.Contexts;
 using Data_Layer.Commands.Bug;
+using Data_Layer.Commands;
+using System.ComponentModel;
 
 namespace BuggerOff
 {
@@ -27,7 +29,7 @@ namespace BuggerOff
 
             services.AddMvc();
 
-			services.AddSingleton<IBugCommandHandler, BugCommandHandler>();
+			services.AddSingleton<ICommandHandler, BugCommandHandler>();
         }
 
         // Configure is called after ConfigureServices is called.
