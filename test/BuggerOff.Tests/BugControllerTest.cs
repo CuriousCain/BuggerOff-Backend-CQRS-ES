@@ -29,13 +29,33 @@ namespace BuggerOff.Tests
 		}
 
         [Fact]
-        public void TestAll()
+        public void TestOpenBug()
         {
 			commandHandler.Setup(x => x.Handle(It.IsAny<OpenBug>())).Verifiable();
 
-			bugController.OpenBug(new Bug { Description = "Test Description" });
+            bugController.OpenBug(new Bug { Description = "Test Description" });
 
 			commandHandler.VerifyAll();
+        }
+
+        [Fact]
+        public void TestCloseBug()
+        {
+            commandHandler.Setup(x => x.Handle(It.IsAny<CloseBug>())).Verifiable();
+
+            bugController.CloseBug(1);
+
+            commandHandler.VerifyAll();
+        }
+
+        [Fact]
+        public void TestCloseMultipleBugs()
+        {
+            commandHandler.Setup(x => x.Handle(It.IsAny<CloseMultipleBugs>())).Verifiable();
+
+            bugController.CloseMultipleBugs(new int[3]);
+
+            commandHandler.VerifyAll();
         }
     }
 }

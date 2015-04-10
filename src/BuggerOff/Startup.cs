@@ -9,6 +9,7 @@ using Data_Layer.Contexts;
 using Data_Layer.Commands.Bug;
 using Data_Layer.Commands;
 using System.ComponentModel;
+using Microsoft.Framework.ConfigurationModel;
 
 namespace BuggerOff
 {
@@ -29,7 +30,8 @@ namespace BuggerOff
 
             services.AddMvc();
 
-			services.AddSingleton<ICommandHandler, BugCommandHandler>();
+            services.AddSingleton<ICommandHandler, BugCommandHandler>();
+            
         }
 
         // Configure is called after ConfigureServices is called.

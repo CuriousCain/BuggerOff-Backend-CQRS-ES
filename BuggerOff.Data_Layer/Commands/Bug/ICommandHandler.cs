@@ -2,8 +2,10 @@
 
 namespace Data_Layer.Commands.Bug
 {
-    public interface ICommandHandler<in TCommand> where TCommand : ICommand
+    public interface ICommandHandler
     {
-		void Handle(TCommand command);
+		void Handle(OpenBug command);		
+		void Handle(CloseBug command);		
+		void Handle(CloseMultipleBugs command);
     }
 }

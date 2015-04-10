@@ -6,8 +6,7 @@ using System.Linq;
 
 namespace Data_Layer.Commands.Bug
 {
-    public class BugCommandHandler : ICommandHandler<OpenBug>, ICommandHandler<CloseBug>,
-        ICommandHandler<CloseMultipleBugs>
+    public class BugCommandHandler : ICommandHandler
     {
         private readonly BugContext db;
         private readonly BugEventHandler eventHandler;
