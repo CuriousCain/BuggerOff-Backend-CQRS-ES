@@ -4,10 +4,10 @@ using Moq;
 using BuggerOff.Controllers;
 using System.Collections.Generic;
 using Data_Layer.Models;
-using Data_Layer.Interfaces;
 using System.Linq;
 using System.Web;
 using Data_Layer.Contexts;
+using Data_Layer.Commands.Bug;
 
 namespace BuggerOff.Tests
 {
@@ -17,21 +17,25 @@ namespace BuggerOff.Tests
 		private Bug testBug = new Bug { Description = "Test Bug", Fixed = false };
 		private BugsController bugController;
         private Mock<BugContext> bugDb;
+		private Mock<IBugCommandHandler> commandHandler;
 
 		public BugControllerTest()
 		{
 			bugList.Add(testBug);
 
             bugDb = new Mock<BugContext>();
-			bugController = new BugsController(bugDb.Object);
+			commandHandler = new Mock<IBugCommandHandler>();
+			bugController = new BugsController(bugDb.Object, commandHandler.Object);
 		}
 
         [Fact]
         public void TestAll()
         {
-            var allBugs = bugController.All();
+			commandHandler.Setup(x => x.Handle(It.IsAny<OpenBug>())).Verifiable();
 
-            bugDb.VerifyGet(x => x.Bugs, Times.Once());
+			bugController.OpenBug(new Bug { Description = "Test Description" });
+
+			commandHandler.VerifyAll();
         }
     }
 }

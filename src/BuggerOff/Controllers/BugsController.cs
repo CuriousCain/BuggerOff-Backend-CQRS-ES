@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Mvc;
-using Data_Layer.Interfaces;
 using Data_Layer.Models;
 using Data_Layer.Commands.Bug;
 using Microsoft.Data.Entity;
@@ -15,13 +14,13 @@ namespace BuggerOff.Controllers
 	//Route is set in Startup: /bugs/[action]
 	public class BugsController : Controller
 	{
-		private BugCommandHandler commandHandler;
+		private IBugCommandHandler commandHandler; //Make interface
 		private BugContext db;
 
-		public BugsController(BugContext bugContext)
+		public BugsController(BugContext bugContext, IBugCommandHandler bugCommandHandler)
 		{
 			db = bugContext;
-			commandHandler = new BugCommandHandler(db);
+			commandHandler = bugCommandHandler;
 		}
 
 		[HttpGet]

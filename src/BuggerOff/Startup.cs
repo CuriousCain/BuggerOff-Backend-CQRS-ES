@@ -5,9 +5,8 @@ using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Routing;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Data.Entity;
-using Data_Layer.Interfaces;
-using Data_Layer.Repositories;
 using Data_Layer.Contexts;
+using Data_Layer.Commands.Bug;
 
 namespace BuggerOff
 {
@@ -28,7 +27,7 @@ namespace BuggerOff
 
             services.AddMvc();
 
-			services.AddSingleton<IBugRepository, BugRepository>();
+			services.AddSingleton<IBugCommandHandler, BugCommandHandler>();
         }
 
         // Configure is called after ConfigureServices is called.
