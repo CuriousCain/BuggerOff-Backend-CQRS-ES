@@ -11,7 +11,6 @@
 		"aspnet50": { }
 	},
     "commands": {
-        "test-vs": "xunit.runner.visualstudio",
-        "test-asp": "xunit.runner.aspnet"
+        "test": "xunit.runner.aspnet"
     }
 }
