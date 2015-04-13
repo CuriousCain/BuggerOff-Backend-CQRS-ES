@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using Data_Layer.Contexts;
 using Data_Layer.Commands.Bug;
+using Data_Layer.Queries.Bug;
 
 namespace BuggerOff.Tests
 {
@@ -18,6 +19,7 @@ namespace BuggerOff.Tests
 		private BugsController bugController;
         private Mock<BugContext> bugDb;
 		private Mock<ICommandHandler> commandHandler;
+        private Mock<IQueryHandler> queryHandler;
 
 		public BugControllerTest()
 		{
@@ -25,7 +27,8 @@ namespace BuggerOff.Tests
 
             bugDb = new Mock<BugContext>();
 			commandHandler = new Mock<ICommandHandler>();
-			bugController = new BugsController(bugDb.Object, commandHandler.Object);
+            queryHandler = new Mock<IQueryHandler>();
+			bugController = new BugsController(bugDb.Object, commandHandler.Object, queryHandler.Object);
 		}
 
         [Fact]
@@ -56,6 +59,26 @@ namespace BuggerOff.Tests
             bugController.CloseMultipleBugs(new int[3]);
 
             commandHandler.VerifyAll();
+        }
+
+        [Fact]
+        public void TestAll_CallsQueryHandler()
+        {
+            queryHandler.Setup(x => x.GetBugSummary()).Verifiable();
+
+            bugController.All();
+
+            queryHandler.VerifyAll();
+        }
+
+        [Fact]
+        public void TestGetByID_CallsQueryHandler()
+        {
+            queryHandler.Setup(x => x.GetBugByID(It.IsAny<int>())).Verifiable();
+
+            bugController.GetByID(1);
+
+            queryHandler.VerifyAll();
         }
     }
 }

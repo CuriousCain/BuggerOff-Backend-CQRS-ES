@@ -10,8 +10,7 @@
         "EntityFramework.SqlServer": "7.0.0-beta3",
         "EntityFramework.Commands": "7.0.0-beta3",
         "BuggerOff.Data_Layer": "1.0.0-*",
-        "Microsoft.Framework.DependencyInjection": "1.0.0-beta3",
-        "Ninject": "3.2.2"
+        "Microsoft.Framework.DependencyInjection": "1.0.0-beta3"
     },
     "frameworks": {
         "aspnet50": {

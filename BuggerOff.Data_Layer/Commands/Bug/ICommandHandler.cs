@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StackExchange.Redis;
+using System;
 
 namespace Data_Layer.Commands.Bug
 {
