@@ -4,10 +4,10 @@ using System.Linq;
 using Microsoft.AspNet.Mvc;
 using Data_Layer.Models;
 using Data_Layer.Commands.Bug;
-using Microsoft.Data.Entity;
 using Data_Layer.Contexts;
-
-// For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+using StackExchange.Redis;
+using Newtonsoft.Json;
+using Data_Layer.Queries.Bug;
 
 namespace BuggerOff.Controllers
 {
@@ -15,23 +15,27 @@ namespace BuggerOff.Controllers
 	public class BugsController : Controller
 	{
 		private ICommandHandler commandHandler;
+        private IQueryHandler queryHandler;
 		private BugContext db;
 
-		public BugsController(BugContext bugContext, ICommandHandler bugCommandHandler)
+		public BugsController(BugContext bugContext, ICommandHandler bugCommandHandler, IQueryHandler bugQueryHandler)
 		{
 			db = bugContext;
 			commandHandler = bugCommandHandler;
+            queryHandler = bugQueryHandler;
 		}
 
-		[HttpGet]
-		public IEnumerable<Bug> All()
-		{
-            return db.Bugs; //TODO: Use database cache (query database)
-		}
+        [HttpGet]
+        public IActionResult All()
+        {
+            
+            return new ObjectResult(queryHandler.GetBugSummary());
+        }
 
 		[HttpGet]
 		public IActionResult GetByID(int id)
 		{
+            queryHandler.GetBugByID(id);
             var bug = db.Bugs.SingleOrDefault(x => x.ID == id);
 
             if (bug == null)

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Web;
 using Data_Layer.Contexts;
 using Data_Layer.Commands.Bug;
-using Data_Layer.Events;
+using Data_Layer.Queries.Bug;
 
 namespace BuggerOff.Tests
 {
@@ -19,7 +19,7 @@ namespace BuggerOff.Tests
 		private BugsController bugController;
         private Mock<BugContext> bugDb;
 		private Mock<ICommandHandler> commandHandler;
-		private Mock<IEventHandler> eventHandler;
+        private Mock<IQueryHandler> queryHandler;
 
 		public BugControllerTest()
 		{
@@ -27,12 +27,12 @@ namespace BuggerOff.Tests
 
             bugDb = new Mock<BugContext>();
 			commandHandler = new Mock<ICommandHandler>();
-			eventHandler = new Mock<IEventHandler>();
-			bugController = new BugsController(bugDb.Object, commandHandler.Object);
+            queryHandler = new Mock<IQueryHandler>();
+			bugController = new BugsController(bugDb.Object, commandHandler.Object, queryHandler.Object);
 		}
 
         [Fact]
-        public void TestOpenBug_CallsCommandHandler()
+        public void TestOpenBug()
         {
 			commandHandler.Setup(x => x.Handle(It.IsAny<OpenBug>())).Verifiable();
 
@@ -42,7 +42,7 @@ namespace BuggerOff.Tests
         }
 
         [Fact]
-        public void TestCloseBug_CallsCommandHandler()
+        public void TestCloseBug()
         {
             commandHandler.Setup(x => x.Handle(It.IsAny<CloseBug>())).Verifiable();
 
@@ -52,13 +52,33 @@ namespace BuggerOff.Tests
         }
 
         [Fact]
-        public void TestCloseMultipleBugs_CallsCommandHandler()
+        public void TestCloseMultipleBugs()
         {
             commandHandler.Setup(x => x.Handle(It.IsAny<CloseMultipleBugs>())).Verifiable();
 
             bugController.CloseMultipleBugs(new int[3]);
 
             commandHandler.VerifyAll();
+        }
+
+        [Fact]
+        public void TestAll_CallsQueryHandler()
+        {
+            queryHandler.Setup(x => x.GetBugSummary()).Verifiable();
+
+            bugController.All();
+
+            queryHandler.VerifyAll();
+        }
+
+        [Fact]
+        public void TestGetByID_CallsQueryHandler()
+        {
+            queryHandler.Setup(x => x.GetBugByID(It.IsAny<int>())).Verifiable();
+
+            bugController.GetByID(1);
+
+            queryHandler.VerifyAll();
         }
     }
 }

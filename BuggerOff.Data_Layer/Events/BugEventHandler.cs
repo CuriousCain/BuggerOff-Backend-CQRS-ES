@@ -3,24 +3,42 @@ using EventStore.ClientAPI;
 using System.Net;
 using System.Text;
 using Newtonsoft.Json;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
+using StackExchange.Redis;
+using Data_Layer.Contexts;
 
 namespace Data_Layer.Events
 {
     public class BugEventHandler : IEventHandler
     {
+        private IEventStoreConnection eventStoreConnection;
+        private ConnectionMultiplexer redisConnection;
+
+        public BugEventHandler()
+        {
+            ConnectToEventStore();
+        }
+
         public void Handle(BugOpened bugOpened)
         {
-            var connection = EventStoreConnection.Create(new IPEndPoint(IPAddress.Loopback, 1113));
-            connection.ConnectAsync().Wait();
-
             var serializedData = SerializeToJsonBytes(bugOpened, bugOpened);
 
             var newEvent = new EventData(bugOpened.Id, "BugOpened", false, serializedData.Item1, serializedData.Item2);
 
-            connection.AppendToStreamAsync("devstream", ExpectedVersion.Any, newEvent).Wait();
+            eventStoreConnection.AppendToStreamAsync("devstream", ExpectedVersion.Any, newEvent).Wait();
+
+            IDatabase db = QueryDatabaseSetup.DBConnection.GetDatabase();
+
+            var newBugValue = new RedisValue();
+            newBugValue = JsonConvert.SerializeObject(bugOpened);
+            db.SetAdd("BugSummary", newBugValue);
         }
+
+        public void ConnectToEventStore()
+        {
+            eventStoreConnection = EventStoreConnection.Create(new IPEndPoint(IPAddress.Loopback, 1113));
+            eventStoreConnection.ConnectAsync().Wait();
+        }
+
 
         private Tuple<byte[], byte[]> SerializeToJsonBytes(object bugEvent, object bugEventMeta)
         {

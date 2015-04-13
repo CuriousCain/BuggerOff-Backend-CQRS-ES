@@ -10,7 +10,7 @@ using Data_Layer.Commands.Bug;
 using Data_Layer.Commands;
 using System.ComponentModel;
 using Microsoft.Framework.ConfigurationModel;
-using Data_Layer.Events;
+using Data_Layer.Queries.Bug;
 
 namespace BuggerOff
 {
@@ -18,7 +18,7 @@ namespace BuggerOff
     {
         public Startup(IHostingEnvironment env)
         {
-			
+            QueryDatabaseSetup.SetDatabaseConnection("localhost:6379");
         }
 
         // This method gets called by a runtime.
@@ -32,13 +32,21 @@ namespace BuggerOff
             services.AddMvc();
 
             services.AddSingleton<ICommandHandler, BugCommandHandler>();
-			services.AddSingleton<IEventHandler, BugEventHandler>();
+            services.AddSingleton<IQueryHandler, BugQueryHandler>();
             
         }
 
         // Configure is called after ConfigureServices is called.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
+                context.Response.Headers.Append("Access-Control-Allow-Headers", new[] { "Content-Type, x-xsrf-token" });
+
+                await next();
+            });
+
             // app.UseStaticFiles();
             // Add MVC to the request pipeline.
             app.UseMvc(routes =>
