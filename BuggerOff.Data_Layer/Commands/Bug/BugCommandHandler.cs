@@ -9,12 +9,12 @@ namespace Data_Layer.Commands.Bug
     public class BugCommandHandler : ICommandHandler
     {
         private readonly BugContext db;
-        private readonly BugEventHandler eventHandler;
+        private readonly IEventHandler eventHandler;
 
-        public BugCommandHandler(BugContext bugContext)
+        public BugCommandHandler(BugContext bugContext, IEventHandler bugEventHandler)
         {
             db = bugContext;
-            eventHandler = new BugEventHandler();
+			eventHandler = bugEventHandler;
         }
 
         public void Handle(OpenBug command)

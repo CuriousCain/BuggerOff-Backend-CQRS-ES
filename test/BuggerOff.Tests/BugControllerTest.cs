@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using Data_Layer.Contexts;
 using Data_Layer.Commands.Bug;
+using Data_Layer.Events;
 
 namespace BuggerOff.Tests
 {
@@ -18,6 +19,7 @@ namespace BuggerOff.Tests
 		private BugsController bugController;
         private Mock<BugContext> bugDb;
 		private Mock<ICommandHandler> commandHandler;
+		private Mock<IEventHandler> eventHandler;
 
 		public BugControllerTest()
 		{
@@ -25,11 +27,12 @@ namespace BuggerOff.Tests
 
             bugDb = new Mock<BugContext>();
 			commandHandler = new Mock<ICommandHandler>();
+			eventHandler = new Mock<IEventHandler>();
 			bugController = new BugsController(bugDb.Object, commandHandler.Object);
 		}
 
         [Fact]
-        public void TestOpenBug()
+        public void TestOpenBug_CallsCommandHandler()
         {
 			commandHandler.Setup(x => x.Handle(It.IsAny<OpenBug>())).Verifiable();
 
@@ -39,7 +42,7 @@ namespace BuggerOff.Tests
         }
 
         [Fact]
-        public void TestCloseBug()
+        public void TestCloseBug_CallsCommandHandler()
         {
             commandHandler.Setup(x => x.Handle(It.IsAny<CloseBug>())).Verifiable();
 
@@ -49,7 +52,7 @@ namespace BuggerOff.Tests
         }
 
         [Fact]
-        public void TestCloseMultipleBugs()
+        public void TestCloseMultipleBugs_CallsCommandHandler()
         {
             commandHandler.Setup(x => x.Handle(It.IsAny<CloseMultipleBugs>())).Verifiable();
 

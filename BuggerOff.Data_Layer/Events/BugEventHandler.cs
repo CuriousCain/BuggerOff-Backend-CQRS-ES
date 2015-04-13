@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Data_Layer.Events
 {
-    public class BugEventHandler
+    public class BugEventHandler : IEventHandler
     {
         public void Handle(BugOpened bugOpened)
         {

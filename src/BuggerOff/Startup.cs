@@ -10,6 +10,7 @@ using Data_Layer.Commands.Bug;
 using Data_Layer.Commands;
 using System.ComponentModel;
 using Microsoft.Framework.ConfigurationModel;
+using Data_Layer.Events;
 
 namespace BuggerOff
 {
@@ -31,6 +32,7 @@ namespace BuggerOff
             services.AddMvc();
 
             services.AddSingleton<ICommandHandler, BugCommandHandler>();
+			services.AddSingleton<IEventHandler, BugEventHandler>();
             
         }
 
